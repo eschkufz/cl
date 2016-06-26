@@ -43,7 +43,6 @@ class Arg : public ArgBase {
       val_ = val;
       return *this;
     }
-
     T& value() {
       return val_;
     }
