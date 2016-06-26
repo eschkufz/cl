@@ -2,10 +2,23 @@
 #define CL_INCLUDE_ARG_H
 
 #include "include/arg_base.h"
-#include "include/val_reader.h"
-#include "include/val_writer.h"
 
 namespace cl {
+
+template <typename T>
+struct ValReader {
+  bool operator()(std::istream& is, T& t) const {
+    is >> t;
+    return !is.fail();
+  }
+};  
+
+template <typename T>
+struct ValWriter {
+  void operator()(std::ostream& os, const T& t) const {
+    os << t;
+  }
+};
 
 template <typename T, typename R = ValReader<T>, typename W = ValWriter<T>, size_t Arity = 1>
 class Arg : public ArgBase {
@@ -16,15 +29,11 @@ class Arg : public ArgBase {
     virtual ~Arg() = default;
 
     Arg& alias(const std::string& a) {
-      names_.insert(convert(a));
+      names_.insert(a);
       return *this;
     }
     Arg& description(const std::string& d) {
       desc_ = d;
-      return *this;
-    }
-    Arg& usage(const std::string& u) {
-      usage_ = u;
       return *this;
     }
     Arg& required() {

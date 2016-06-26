@@ -2,6 +2,7 @@
 #define CL_INCLUDE_CL_H
 
 #include "include/arg.h"
+#include "include/arg_base.h"
 #include "include/args.h"
 #include "include/flag_arg.h"
 #include "include/file_arg.h"

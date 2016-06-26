@@ -2,10 +2,15 @@
 #define CL_INCLUDE_FLAG_ARG_H
 
 #include "arg.h"
-#include "flag_reader.h"
-#include "val_writer.h"
 
 namespace cl {
+
+struct FlagReader {
+  bool operator()(std::istream& is, bool& b) const {
+    (void)is;
+    return (b = true);
+  }
+};
 
 typedef Arg<bool, FlagReader, ValWriter<bool>, 0> FlagArg;
 
