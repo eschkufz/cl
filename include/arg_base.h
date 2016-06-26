@@ -11,6 +11,15 @@ namespace cl {
 
 class ArgBase {
   public:
+    ArgBase(const std::string& name) : desc_(""), required_(false) {
+      names_.insert(name);
+
+      auto& table = ArgTable::get();
+      if (!table.groups_.empty()) {
+        table.current_->args_.insert(this);
+      }
+      table.args_.insert(this);
+    }
     virtual ~ArgBase() = default;
 
     typedef std::set<std::string>::const_iterator alias_itr;
@@ -35,16 +44,6 @@ class ArgBase {
     virtual size_t arity() const = 0;
 
   protected:
-    ArgBase(const std::string& name) : desc_(""), required_(false) {
-      names_.insert(name);
-
-      auto& table = ArgTable::get();
-      if (!table.groups_.empty()) {
-        table.current_->args_.insert(this);
-      }
-      table.args_.insert(this);
-    }
-
     std::set<std::string> names_;
     std::string desc_;
     bool required_;

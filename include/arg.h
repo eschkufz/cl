@@ -12,7 +12,6 @@ struct ValReader {
     return !is.fail();
   }
 };  
-
 template <typename T>
 struct ValWriter {
   void operator()(std::ostream& os, const T& t) const {
