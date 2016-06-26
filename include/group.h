@@ -18,6 +18,11 @@ class Group {
       return *(new Group(name));
     }
 
+    Group(const Group& rhs) = delete;
+    Group(const Group&& rhs) = delete;
+    Group& operator=(const Group& rhs) = delete;
+    Group&& operator==(const Group&& rhs) = delete;
+
     typedef std::set<Arg*>::const_iterator arg_itr;
     arg_itr arg_begin() const {
       return args_.begin();

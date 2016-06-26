@@ -20,6 +20,10 @@ class Arg {
       }
       table.args_.insert(this);
     }
+    Arg(const Arg& rhs) = delete;
+    Arg(const Arg&& rhs) = delete;
+    Arg& operator=(const Arg& rhs) = delete;
+    Arg&& operator=(const Arg&& rhs) = delete;
     virtual ~Arg() = default;
 
     typedef std::set<std::string>::const_iterator alias_itr;
