@@ -7,10 +7,10 @@
 
 namespace cl {
 
-class ArgBase;
+class Arg;
 
 class Group {
-  friend class ArgBase;
+  friend class Arg;
   friend class Args;
 
   public:
@@ -18,7 +18,7 @@ class Group {
       return *(new Group(name));
     }
 
-    typedef std::set<ArgBase*>::const_iterator arg_itr;
+    typedef std::set<Arg*>::const_iterator arg_itr;
     arg_itr arg_begin() const {
       return args_.begin();
     }
@@ -37,7 +37,7 @@ class Group {
     }
 
     std::string name_;
-    std::set<ArgBase*> args_; 
+    std::set<Arg*> args_; 
 };
 
 } // namespace cl

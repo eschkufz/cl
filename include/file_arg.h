@@ -2,7 +2,7 @@
 #define CL_INCLUDE_FILE_ARG_H
 
 #include <fstream>
-#include "arg.h"
+#include "val_arg.h"
 
 namespace cl {
 
@@ -24,7 +24,7 @@ struct FileReader {
 };
 
 template <typename T, typename R = ValReader<T>, typename W = ValWriter<T>>
-using FileArg = Arg<T, FileReader<T, R>, W>; 
+using FileArg = ValArg<T, FileReader<T, R>, W>; 
 
 } // namespace cl
 

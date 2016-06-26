@@ -14,7 +14,6 @@ GTEST_TARGET=bin/gtest
 
 ### Regression test binaries
 TEST_OBJ=\
-	test/global.o \
 	test/inter.o \
 	test/intra.o
 

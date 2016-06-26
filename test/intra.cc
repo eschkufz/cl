@@ -22,9 +22,6 @@ int num_args() {
 int num_args(Group* g) {
   return count(g->arg_begin(), g->arg_end());
 }
-int num_errors() {
-  return count(Args::error_begin(), Args::error_end());
-}
 
 // Make an argv vector
 char** argv(const initializer_list<string>& args) {
@@ -36,9 +33,11 @@ char** argv(const initializer_list<string>& args) {
   return &ret[0];
 }
 
+// Global state: guaranteed to be initialized before any tests are invoked
+auto& global = FlagArg::create("--global");
+
 // Check that groups and args are organized correctly in arg table
 TEST(arg_table, size) {
-  // One arg is declared globally in global.cc
   EXPECT_EQ(num_groups(), 0);
   EXPECT_EQ(num_args(), 1);
 
@@ -53,17 +52,33 @@ TEST(arg_table, size) {
 
 // Check unsuccessful arg parsing
 TEST(arg, read_fail) {
-  Arg<int>::create("--int1");
+  auto& int1 = ValArg<int>::create("--int1");
   Args::read(2, argv({"--int1", "a"}));
-  EXPECT_EQ(num_errors(), 1);
+  EXPECT_TRUE(int1.error());
 }
 
 // Check successful arg parsing
 TEST(arg, read_succ) {
-  auto& int2 = Arg<int>::create("--int2").initial(0);
+  auto& int2 = ValArg<int>::create("--int2").initial(0);
   Args::read(2, argv({"--int2", "20"}));
-  EXPECT_EQ(num_errors(), 0);
+  EXPECT_FALSE(int2.error());
   EXPECT_EQ(int2.value(), 20);
+}
+
+// Check provided flag
+TEST(arg, provided) {
+  auto& int3 = ValArg<int>::create("--int3");
+  EXPECT_FALSE(int3.provided());
+  Args::read(2, argv({"--int3", "20"}));
+  EXPECT_TRUE(int3.provided());
+}
+
+// Check duplicate flag
+TEST(arg, duplicate) {
+  auto& int4 = ValArg<int>::create("--int4");
+  EXPECT_FALSE(int4.duplicated());
+  Args::read(4, argv({"--int4", "10", "--int4", "20"}));
+  EXPECT_TRUE(int4.duplicated());
 }
 
 // Check flag parsing
@@ -73,12 +88,17 @@ TEST(flag_arg, read) {
   EXPECT_TRUE(flag.value());
 }
 
-// Check file parsing
-TEST(file_arg, read_succ) {
-  auto& int3 = FileArg<int>::create("--int3").initial(0);
-  Args::read(2, argv({"--int3", "./test/data/ints/int_1.dat"}));
-  EXPECT_EQ(num_errors(), 0);
-  EXPECT_EQ(int3.value(), 1);
+// Check unsuccessful file parsing
+TEST(file_arg, read_fail) {
+  auto& int5 = FileArg<int>::create("--int5").initial(0);
+  Args::read(2, argv({"--int5", "./path/to/nowhere/..."}));
+  EXPECT_TRUE(int5.error());
 }
 
-
+// Check successful file parsing
+TEST(file_arg, read_succ) {
+  auto& int6 = FileArg<int>::create("--int6").initial(0);
+  Args::read(2, argv({"--int6", "./test/data/ints/int_1.dat"}));
+  EXPECT_FALSE(int6.error());
+  EXPECT_EQ(int6.value(), 1);
+}

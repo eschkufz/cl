@@ -5,12 +5,12 @@
 
 namespace cl {
 
-class ArgBase;
+class Arg;
 class Group;
 
 class ArgTable {
+  friend class Arg;
   friend class Args;
-  friend class ArgBase;
   friend class Group;
 
   private:
@@ -21,15 +21,8 @@ class ArgTable {
 
     Group* current_;
     std::set<Group*> groups_;
-    std::set<ArgBase*> args_;
-
-    std::set<const char*> anonymous_;
-    std::set<ArgBase*> provided_;
-
-    std::set<const char*> unrecognized_;
-    std::set<ArgBase*> missing_;
-    std::set<ArgBase*> error_;
-    std::set<ArgBase*> duplicate_;
+    std::set<Arg*> args_;
+    std::set<const char*> unrec_;
 };
 
 } // namespace cl

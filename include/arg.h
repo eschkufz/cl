@@ -1,66 +1,64 @@
 #ifndef CL_INCLUDE_ARG_H
 #define CL_INCLUDE_ARG_H
 
-#include "include/arg_base.h"
+#include <iostream>
+#include <set>
+#include <string>
+#include "include/arg_table.h"
+#include "include/group.h"
 
 namespace cl {
 
-template <typename T>
-struct ValReader {
-  bool operator()(std::istream& is, T& t) const {
-    is >> t;
-    return !is.fail();
-  }
-};  
-template <typename T>
-struct ValWriter {
-  void operator()(std::ostream& os, const T& t) const {
-    os << t;
-  }
-};
-
-template <typename T, typename R = ValReader<T>, typename W = ValWriter<T>, size_t Arity = 1>
-class Arg : public ArgBase {
+class Arg {
   public:
-    static Arg& create(const std::string& name) {
-      return *(new Arg(name));
+    Arg(const std::string& name) : desc_(""), req_(false), prov_(false), dup_(false), err_(false) {
+      names_.insert(name);
+
+      auto& table = ArgTable::get();
+      if (!table.groups_.empty()) {
+        table.current_->args_.insert(this);
+      }
+      table.args_.insert(this);
     }
     virtual ~Arg() = default;
 
-    Arg& alias(const std::string& a) {
-      names_.insert(a);
-      return *this;
+    typedef std::set<std::string>::const_iterator alias_itr;
+    const alias_itr alias_begin() const {
+      return names_.begin();
     }
-    Arg& description(const std::string& d) {
-      desc_ = d;
-      return *this;
+    const alias_itr alias_end() const {
+      return names_.end();
     }
-    Arg& required() {
-      required_ = true;
-      return *this;
+    bool matches(const std::string& alias) const {
+      return names_.find(alias) != names_.end();
     }
-    Arg& initial(const T& val) {
-      val_ = val;
-      return *this;
+    const std::string& description() const {
+      return desc_;
     }
-    T& value() {
-      return val_;
+    bool required() const {
+      return req_;
     }
-
-    virtual bool read(std::istream& is) {
-      return R()(is, val_);
+    bool provided() const {
+      return prov_;
     }
-    virtual void write(std::ostream& os) const {
-      W()(os, val_);
+    bool duplicated() const {
+      return dup_;
     }
-    virtual size_t arity() const {
-      return Arity;
+    bool error() const {
+      return err_;
     }
 
-  private:
-    Arg(const std::string& name) : ArgBase(name), val_() {}
+    virtual void read(std::istream& is) = 0;
+    virtual void write(std::ostream& os) const = 0;
+    virtual size_t arity() const = 0;
 
-    T val_;
+  protected:
+    std::set<std::string> names_;
+    std::string desc_;
+    bool req_;
+    bool prov_;
+    bool dup_;
+    bool err_;
 };
 
 } // namespace cl
