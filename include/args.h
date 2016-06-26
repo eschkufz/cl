@@ -7,8 +7,6 @@
 #include "include/arg_base.h"
 #include "include/group.h"
 
-#include <iostream>
-
 namespace cl {
 
 class Args {
