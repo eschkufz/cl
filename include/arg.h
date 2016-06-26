@@ -4,6 +4,7 @@
 #include <iostream>
 #include <set>
 #include <string>
+#include "ext/patterns/include/singleton.h"
 #include "include/arg_table.h"
 #include "include/group.h"
 
@@ -14,7 +15,7 @@ class Arg {
     Arg(const std::string& name) : desc_(""), req_(false), prov_(false), dup_(false), err_(false) {
       names_.insert(name);
 
-      auto& table = ArgTable::get();
+      auto& table = patterns::Singleton<ArgTable>::get();
       if (!table.groups_.empty()) {
         table.current_->args_.insert(this);
       }

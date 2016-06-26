@@ -14,11 +14,6 @@ class ArgTable {
   friend class Group;
 
   private:
-    static ArgTable& get() {
-      static ArgTable t;
-      return t;
-    }
-
     Group* current_;
     std::set<Group*> groups_;
     std::set<Arg*> args_;

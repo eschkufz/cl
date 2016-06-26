@@ -3,6 +3,7 @@
 
 #include <set>
 #include <string>
+#include "ext/patterns/include/singleton.h"
 #include "include/arg_table.h"
 
 namespace cl {
@@ -36,7 +37,7 @@ class Group {
 
   private:
     Group(const std::string& name) : name_(name) { 
-      auto& table = ArgTable::get();
+      auto& table = patterns::Singleton<ArgTable>::get();
       table.current_ = this;
       table.groups_.insert(this);
     }
