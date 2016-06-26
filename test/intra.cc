@@ -33,6 +33,14 @@ char** argv(const initializer_list<string>& args) {
   return &ret[0];
 }
 
+// Writer for int vector
+template <>
+struct ValWriter<vector<int>> {
+  void operator()(ostream& os, const vector<int>& vs) {
+    os << vs.size();
+  }
+};
+
 // Global state: guaranteed to be initialized before any tests are invoked
 auto& global = FlagArg::create("--global");
 
@@ -90,7 +98,7 @@ TEST(flag_arg, read) {
 
 // Check unsuccessful file parsing
 TEST(file_arg, read_fail) {
-  auto& int5 = FileArg<int>::create("--int5").initial(0);
+  auto& int5 = FileArg<int>::create("--int5");
   Args::read(2, argv({"--int5", "./path/to/nowhere/..."}));
   EXPECT_TRUE(int5.error());
 }
@@ -98,7 +106,22 @@ TEST(file_arg, read_fail) {
 // Check successful file parsing
 TEST(file_arg, read_succ) {
   auto& int6 = FileArg<int>::create("--int6").initial(0);
-  Args::read(2, argv({"--int6", "./test/data/ints/int_1.dat"}));
+  Args::read(2, argv({"--int6", "./test/ints/int_1.dat"}));
   EXPECT_FALSE(int6.error());
   EXPECT_EQ(int6.value(), 1);
+}
+
+// Check unsuccessful directory parsing
+TEST(dir_arg, read_fail) {
+  auto& ints1 = DirArg<vector<int>>::create("--ints1"); 
+  Args::read(2, argv({"--ints1", "./path/to/nowhere/..."}));
+  EXPECT_TRUE(ints1.error());
+}
+
+// Check successful directory parsing
+TEST(dir_arg, read_succ) {
+  auto& ints2 = DirArg<vector<int>>::create("--ints2"); 
+  Args::read(2, argv({"--ints2", "./test/ints"}));
+  EXPECT_FALSE(ints2.error());
+  EXPECT_TRUE(ints2.value().size() == 3);
 }

@@ -1,7 +1,7 @@
 #ifndef CL_INCLUDE_FLAG_ARG_H
 #define CL_INCLUDE_FLAG_ARG_H
 
-#include "val_arg.h"
+#include "include/val_arg.h"
 
 namespace cl {
 
