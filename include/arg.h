@@ -12,9 +12,7 @@ namespace cl {
 
 class Arg {
   public:
-    Arg(const std::string& name) : desc_(""), req_(false), prov_(false), dup_(false), err_(false) {
-      names_.insert(name);
-
+    Arg(const std::string& name) : names_({{name}}), desc_(""), req_(false), prov_(false), dup_(false), err_(false) {
       auto& table = patterns::Singleton<ArgTable>::get();
       if (!table.groups_.empty()) {
         table.current_->args_.insert(this);

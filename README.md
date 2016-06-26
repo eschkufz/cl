@@ -1,6 +1,3 @@
-Todo:
-1. Cleanup on shutdown
-
 Old Code:
 
 struct ArgComp {
