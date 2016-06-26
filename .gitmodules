@@ -1,3 +1,6 @@
 [submodule "ext/patterns"]
 	path = ext/patterns
 	url = https://github.com/eschkufz/patterns
+[submodule "ext/meta"]
+	path = ext/meta
+	url = https://github.com/eschkufz/meta
