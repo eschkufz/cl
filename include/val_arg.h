@@ -46,6 +46,9 @@ class ValArg : public Arg {
     T& value() {
       return val_;
     }
+    operator T&() {
+      return val_;
+    }
 
     virtual void read(std::istream& is) {
       err_ = !R()(is, val_);

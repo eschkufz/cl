@@ -17,14 +17,20 @@ TEST_OBJ=\
 	test/inter.o \
 	test/intra.o
 
+### Example binaries
+BINS=\
+	bin/example
+
 ### Top-level commands
-all: check
+all: ${GTEST_TARGET} ${BINS}
 check: ${GTEST_TARGET}
 		${GTEST_TARGET}
 clean:
-		rm -rf ${GTEST_BUILD_DIR} ${TEST_OBJ} ${GTEST_TARGET}
+		rm -rf ${BINS} ${GTEST_BUILD_DIR} ${TEST_OBJ} ${GTEST_TARGET}
 
 ### Build rules
+bin/%: tools/%.cc include/*.h
+	${CXX} ${CXX_OPT} ${INC} $< -o $@
 test/%.o: test/%.cc test/*.cc include/*.h
 	${CXX} ${CXX_OPT} ${INC} ${GTEST_INC} -c $< -o $@
 ${GTEST_LIB}:

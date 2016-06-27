@@ -7,6 +7,7 @@
 #include "include/flag_arg.h"
 #include "include/file_arg.h"
 #include "include/group.h"
+#include "include/simple.h"
 #include "include/val_arg.h"
 
 #endif
