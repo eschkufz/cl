@@ -3,11 +3,12 @@
 using namespace cl;
 using namespace std;
 
-auto& g1 = Group::create("Native arguments");
+auto& g1 = Group::create("Native Arguments");
 auto& f = FlagArg::create("--flag")
   .alias("-f")
   .description("A boolean flag");
 auto& i1 = ValArg<int>::create("--int")
+  .usage("<int>")
   .description("An integer value");
 
 struct C {
@@ -31,9 +32,10 @@ struct ValWriter<C> {
   }
 };
 
-auto& g2 = Group::create("Complex arguments");
+auto& g2 = Group::create("Complex Arguments");
 auto& c = ValArg<C>::create("--complex")
-  .description("A triplet of ints: <int> <int> <int>");
+  .usage("<int> <int> <int>")
+  .description("A triplet of ints");
 
 template <>
 struct ValWriter<vector<int>> {
@@ -46,7 +48,7 @@ struct ValWriter<vector<int>> {
   }
 };
 
-auto& g3 = Group::create("Higher order arguments");
+auto& g3 = Group::create("Higher-Order Arguments");
 auto& i2 = FileArg<int>::create("--int-file")
   .description("A file that contains an integer value");
 auto& i3 = DirArg<vector<int>>::create("--int-dir")

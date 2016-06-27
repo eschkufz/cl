@@ -35,6 +35,10 @@ class ValArg : public Arg {
       desc_ = d;
       return *this;
     }
+    ValArg& usage(const std::string& u) {
+      usage_ = u;
+      return *this;
+    }
     ValArg& required() {
       req_ = true;
       return *this;

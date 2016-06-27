@@ -12,7 +12,7 @@ namespace cl {
 
 class Arg {
   public:
-    Arg(const std::string& name) : names_({{name}}), desc_(""), req_(false), prov_(false), dup_(false), err_(false) {
+    Arg(const std::string& name) : names_({{name}}), desc_(""), usage_(""), req_(false), prov_(false), dup_(false), err_(false) {
       auto& table = patterns::Singleton<ArgTable>::get();
       if (!table.groups_.empty()) {
         table.current_->args_.insert(this);
@@ -35,6 +35,9 @@ class Arg {
     const std::string& description() const {
       return desc_;
     }
+    const std::string& usage() const {
+      return usage_;
+    }
     bool required() const {
       return req_;
     }
@@ -55,6 +58,7 @@ class Arg {
   protected:
     std::set<std::string> names_;
     std::string desc_;
+    std::string usage_;
     bool req_;
     bool prov_;
     bool dup_;
