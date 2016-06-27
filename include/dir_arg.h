@@ -37,13 +37,13 @@ class DirReader {
           if (!DirReader<T,R>()(ss, t)) {
             return false;
           }
-          continue;
+        } else {
+          typename T::value_type v;
+          if (!FileReader<typename T::value_type,R>()(ss, v)) {
+            return false;
+          }
+          add(t, v);
         }
-        typename T::value_type v;
-        if (!FileReader<typename T::value_type,R>()(ss, v)) {
-          return false;
-        }
-        add(t, v);
       }
 
       return true;

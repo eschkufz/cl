@@ -11,12 +11,8 @@ struct FileReader {
   bool operator()(std::istream& is, T& t) const {
     std::string path = "";
     is >> path;
-
     std::ifstream ifs(path);
-    if (!ifs.is_open()) {
-      return false;
-    }
-    return R()(ifs, t);
+    return ifs.is_open() ? R()(ifs, t) : false;
   }
 };
 
