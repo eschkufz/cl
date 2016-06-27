@@ -106,7 +106,7 @@ TEST(file_arg, read_fail) {
 // Check successful file parsing
 TEST(file_arg, read_succ) {
   auto& int6 = FileArg<int>::create("--int6").initial(0);
-  Args::read(2, argv({"--int6", "./test/ints/int_1.dat"}));
+  Args::read(2, argv({"--int6", "./data/ints/int_1.dat"}));
   EXPECT_FALSE(int6.error());
   EXPECT_EQ(int6.value(), 1);
 }
@@ -121,7 +121,7 @@ TEST(dir_arg, read_fail) {
 // Check successful directory parsing
 TEST(dir_arg, read_succ) {
   auto& ints2 = DirArg<vector<int>>::create("--ints2"); 
-  Args::read(2, argv({"--ints2", "./test/ints"}));
+  Args::read(2, argv({"--ints2", "./data/ints"}));
   EXPECT_FALSE(ints2.error());
   EXPECT_TRUE(ints2.value().size() == 3);
 }
