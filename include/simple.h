@@ -8,7 +8,7 @@ namespace cl {
 
 class Simple {
   public:
-    static void read(int argc, char** argv) {
+    static void read(int argc, char** argv, std::ostream& out = std::cout, std::ostream& err = std::cerr) {
       Group::create("Help and Command Line Options");
       auto& help = FlagArg::create("--help")
         .alias("-h")
@@ -16,12 +16,12 @@ class Simple {
 
       Args::read(argc, argv);
       if (help) {
-        write_help(std::cout);
+        write_help(out);
         exit(0);
       }
       for (auto i = Args::arg_begin(), ie = Args::arg_end(); i != ie; ++i) {
         if (error(*i)) {
-          write_error(std::cout, *i);
+          write_error(err, *i);
           exit(1);
         }
       }
