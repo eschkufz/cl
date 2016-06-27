@@ -14,7 +14,7 @@ class Simple {
       Group::create("Help and command line options");
       auto& help = FlagArg::create("--help")
         .alias("-h")
-        .description("Print this message and quit");
+        .description("Print command line information and quit");
 
       Args::read(argc, argv);
 
