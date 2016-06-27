@@ -32,9 +32,6 @@ class Arg {
     const alias_itr alias_end() const {
       return names_.end();
     }
-    bool matches(const std::string& alias) const {
-      return names_.find(alias) != names_.end();
-    }
     const std::string& description() const {
       return desc_;
     }

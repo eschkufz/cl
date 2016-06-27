@@ -52,7 +52,7 @@ class Args {
   private:
     static arg_itr find(const char* alias) {
       return std::find_if(arg_begin(), arg_end(), [alias](Arg* a) {
-        return a->matches(alias);
+        return std::find(a->alias_begin(), a->alias_end(), alias) != a->alias_end();
       });
     }
 };
