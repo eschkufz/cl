@@ -1,10 +1,8 @@
 #ifndef CL_INCLUDE_SIMPLE_H
 #define CL_INCLUDE_SIMPLE_H
 
-#include "include/arg.h"
 #include "include/args.h"
 #include "include/flag_arg.h"
-#include "include/group.h"
 
 namespace cl {
 
@@ -15,11 +13,8 @@ class Simple {
       auto& help = FlagArg::create("--help")
         .alias("-h")
         .description("Print command line information and quit");
-      ValArg<std::string>::create("--args")
-        .usage("<path>")
-        .description("Expand the contents of this file into command line arguments");
 
-      parse(argc, argv);
+      Args::read(argc, argv);
       if (help) {
         write_help(std::cout);
         exit(0);
@@ -33,51 +28,6 @@ class Simple {
     }
 
   private:
-    static void parse(int argc, char** argv) {
-      std::stringstream ss;
-      for (int i = 0; i < argc; ++i) {
-        ss << "\"" << argv[i] << "\"" << std::endl;
-      }
-      std::vector<std::string> args;
-      expand(ss, args);
-
-      std::vector<char*> cps;
-      for (const auto& a : args) {
-        cps.push_back((char*)a.c_str());
-      }
-      Args::read(cps.size(), &cps[0]);
-    }
-
-    static void expand(std::istream& is, std::vector<std::string>& args) {
-      std::stringstream ss;
-      std::string s = "";
-      while (getline(is, s)) {
-        ss << s.substr(0, line.find('#')) << " ";
-      }
-      while (getstr(ss, s)) {
-
-      }
-    }
-
-    static std::istream& getstr(std::istream& is, std::string& s) {
-      is >> s;    
-      if (s.front() == '\"') {
-        s = s.substr(1);
-        if (s.back() == '\"') {
-          s = s.substr(0, s.length()-1);
-        } else {
-          std::string suf = "";
-          while (is >> suf && suf.back() != '"') {
-            s = s + " " + suf;
-          }
-          if (is.fail()) {
-
-          }
-        }
-      }
-      return is;
-    }
-
     static bool error(const Arg* a) {
       return a->error() || a->duplicated() || (a->required() && !a->provided());
     }

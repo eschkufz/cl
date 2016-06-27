@@ -1,6 +1,4 @@
 #include <initializer_list>
-#include <string>
-#include <vector>
 #include "gtest/gtest.h"
 #include "include/cl.h"
 
@@ -8,19 +6,14 @@ using namespace cl;
 using namespace std;
 
 // Count number of elements
-template <typename Itr>
-int count(Itr begin, Itr end) {
-  vector<typename Itr::value_type> elems(begin, end);
-  return elems.size();
-}
 int num_groups() {
-  return count(Args::group_begin(), Args::group_end());
+  return Args::group_end() - Args::group_begin();
 }
 int num_args() {
-  return count(Args::arg_begin(), Args::arg_end());
+  return Args::arg_end() - Args::arg_begin();
 }
 int num_args(Group* g) {
-  return count(g->arg_begin(), g->arg_end());
+  return g->arg_end() - g->arg_begin();
 }
 
 // Make an argv vector

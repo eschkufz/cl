@@ -1,4 +1,3 @@
-#include <algorithm>
 #include "gtest/gtest.h"
 #include "include/cl.h"
 
@@ -7,9 +6,7 @@ using namespace std;
 
 // Check the visibility of args defined in other translation units
 TEST(inter, visible) {
-  const auto itr = find_if(Args::arg_begin(), Args::arg_end(), [](Arg* a) {
-    return find(a->alias_begin(), a->alias_end(), "--global") != a->alias_end();
-  });
+  const auto itr = Args::arg_find("--global");
   EXPECT_NE(itr, Args::arg_end());
 }
 

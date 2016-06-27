@@ -2,9 +2,7 @@
 #define CL_INCLUDE_DIR_ARG_H
 
 #include <dirent.h>
-#include <sstream>
 #include <sys/stat.h>
-#include <type_traits>
 #include "ext/meta/include/is_stl_associative.h"
 #include "ext/meta/include/is_stl_sequence.h"
 #include "include/file_arg.h"
@@ -45,7 +43,6 @@ class DirReader {
           add(t, v);
         }
       }
-
       return true;
     }
 

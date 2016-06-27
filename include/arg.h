@@ -6,7 +6,6 @@
 #include <string>
 #include "ext/patterns/include/singleton.h"
 #include "include/arg_table.h"
-#include "include/group.h"
 
 namespace cl {
 
@@ -14,10 +13,10 @@ class Arg {
   public:
     Arg(const std::string& name) : names_({{name}}), desc_(""), usage_(""), req_(false), prov_(false), dup_(false), err_(false) {
       auto& table = patterns::Singleton<ArgTable>::get();
-      if (!table.groups_.empty()) {
-        table.current_->args_.insert(this);
+      if (!table.args_by_group_.empty()) {
+        table.args_by_group_.back().push_back(this);
       }
-      table.args_.insert(this);
+      table.args_.push_back(this);
     }
     Arg(const Arg& rhs) = delete;
     Arg(const Arg&& rhs) = delete;
@@ -31,6 +30,9 @@ class Arg {
     }
     const alias_itr alias_end() const {
       return names_.end();
+    }
+    bool matches(const std::string& alias) const {
+      return names_.find(alias) != names_.end();
     }
     const std::string& description() const {
       return desc_;

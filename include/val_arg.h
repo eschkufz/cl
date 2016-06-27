@@ -68,7 +68,6 @@ class ValArg : public Arg {
 
   private:
     ValArg(const std::string& name) : Arg(name), val_() {}
-
     T val_;
 };
 
