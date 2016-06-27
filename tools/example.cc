@@ -3,27 +3,12 @@
 using namespace cl;
 using namespace std;
 
-template <>
-struct ValWriter<vector<int>> {
-  void operator()(ostream& os, const vector<int>& vs) const {
-    os << "{";
-    for (auto i : vs) {
-      os << " " << i;
-    }
-    os << " }";
-  }
-};
-
 auto& g1 = Group::create("Native arguments");
 auto& f = FlagArg::create("--flag")
   .alias("-f")
   .description("A boolean flag");
 auto& i1 = ValArg<int>::create("--int")
   .description("An integer value");
-auto& i2 = FileArg<int>::create("--int-file")
-  .description("A file that contains an integer value");
-auto& i3 = DirArg<vector<int>>::create("--int-dir")
-  .description("A directory that contains files with integer values");
 
 struct C {
   int x;
@@ -49,6 +34,23 @@ struct ValWriter<C> {
 auto& g2 = Group::create("Complex arguments");
 auto& c = ValArg<C>::create("--complex")
   .description("A triplet of ints: <int> <int> <int>");
+
+template <>
+struct ValWriter<vector<int>> {
+  void operator()(ostream& os, const vector<int>& vs) const {
+    os << "{";
+    for (auto i : vs) {
+      os << " " << i;
+    }
+    os << " }";
+  }
+};
+
+auto& g3 = Group::create("Higher order arguments");
+auto& i2 = FileArg<int>::create("--int-file")
+  .description("A file that contains an integer value");
+auto& i3 = DirArg<vector<int>>::create("--int-dir")
+  .description("A directory that contains files with integer values");
 
 int main(int argc, char** argv) {
   Simple::read(argc, argv);
