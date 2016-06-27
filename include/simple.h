@@ -20,17 +20,17 @@ class Simple {
 
       if (help) {
         std::vector<Group*> gs(Args::group_begin(), Args::group_end());
-        std::sort(gs.begin(), gs.end(), LtGroup());
+        std::sort(gs.begin(), gs.end(), [](Group* g1, Group* g2) {return g1->name() <= g2->name();});
 
         for (auto i = gs.begin(), ie = gs.end(); i != ie; ++i) {
           std::cout << std::endl << (*i)->name() << ":" << std::endl;
 
           std::vector<Arg*> as((*i)->arg_begin(), (*i)->arg_end());
-          std::sort(as.begin(), as.end(), LtArg());
+          std::sort(as.begin(), as.end(), [](Arg* a1, Arg* a2) {return *(a1->alias_begin()) <= *(a2->alias_begin());});
 
           for (auto j = as.begin(), je = as.end(); j != je; ++j) {
             for (auto k = (*j)->alias_begin(), ke = (*j)->alias_end(); k != ke; ++k) {
-              std::cout << "  " << *k;
+              std::cout << " " << *k;
             }
             std::cout << std::endl;
             std::cout << "    Desc:     " << ((*j)->description() == "" ? "<none>" : (*j)->description()) << std::endl;
@@ -53,24 +53,13 @@ class Simple {
     }
 
   private:
-    struct LtArg {
-      bool operator()(const Arg* a1, const Arg* a2) const {
-        return *(a1->alias_begin()) <= *(a2->alias_begin());
-      }
-    };
-    struct LtGroup {
-      bool operator()(const Group* g1, const Group* g2) const {
-        return g1->name() <= g2->name();
-      }
-    };
-
     static std::pair<bool, std::string> status(const Arg* a) {
       if (a->error()) {
         return std::make_pair(false, "Unable to parse argument!");
       } else if (a->duplicated()) {
-        return std::make_pair(false, "Duplicate value provided!");
+        return std::make_pair(false, "Duplicate values provided!");
       } else if (a->required() && !a->provided()) {
-        return std::make_pair(false, "Required value was not provided!");
+        return std::make_pair(false, "Required value not provided!");
       } else {
         std::stringstream ss;
         a->write(ss);

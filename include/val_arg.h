@@ -43,10 +43,10 @@ class ValArg : public Arg {
       val_ = val;
       return *this;
     }
-    T& value() {
+    const T& value() const {
       return val_;
     }
-    operator T&() {
+    operator const T&() const {
       return val_;
     }
 
