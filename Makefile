@@ -27,7 +27,7 @@ check: ${GTEST_TARGET}
 		${GTEST_TARGET}
 submodule:
 		git submodule init
-		git submodule pull
+		git submodule update
 clean:
 		rm -rf ${BINS} ${GTEST_BUILD_DIR} ${TEST_OBJ} ${GTEST_TARGET}
 
