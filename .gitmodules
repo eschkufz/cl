@@ -4,3 +4,6 @@
 [submodule "ext/meta"]
 	path = ext/meta
 	url = https://github.com/eschkufz/meta
+[submodule "ext/googletest"]
+	path = ext/googletest
+	url = https://github.com/google/googletest

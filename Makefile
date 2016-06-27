@@ -4,7 +4,7 @@ CXX=g++ -std=c++11
 CXX_OPT=-Werror -Wextra -Wall -Wfatal-errors -pedantic 
 
 ### Constants: gtest
-GTEST_ROOT_DIR=ext/gtest-1.7.0
+GTEST_ROOT_DIR=ext/googletest/googletest/
 GTEST_BUILD_DIR=${GTEST_ROOT_DIR}/build
 GTEST_INC_DIR=${GTEST_ROOT_DIR}/include
 GTEST_MAIN=${GTEST_BUILD_DIR}/libgtest_main.a
