@@ -7,7 +7,7 @@ auto& g1 = Group::create("Native Arguments");
 auto& f = FlagArg::create("--flag")
   .alias("-f")
   .description("A boolean flag");
-auto& i1 = ValArg<int>::create("--int")
+auto& i1 = StrArg<int>::create("--int")
   .usage("<int>")
   .description("An integer value");
 
@@ -19,14 +19,14 @@ struct C {
 
 namespace cl {
 template <>
-struct ValReader<C> {
+struct StrReader<C> {
   bool operator()(istream& is, C& c) const {
     is >> c.x >> c.y >> c.z;
     return !is.fail();
   }
 };
 template <>
-struct ValWriter<C> {
+struct StrWriter<C> {
   void operator()(ostream& os, const C& c) const {
     os << c.x << " " << c.y << " " << c.z;
   }
@@ -34,13 +34,13 @@ struct ValWriter<C> {
 }
 
 auto& g2 = Group::create("Complex Arguments");
-auto& c = ValArg<C>::create("--complex")
+auto& c = StrArg<C>::create("--complex")
   .usage("<int> <int> <int>")
   .description("A triplet of ints");
 
 namespace cl {
 template <>
-struct ValWriter<vector<int>> {
+struct StrWriter<vector<int>> {
   void operator()(ostream& os, const vector<int>& vs) const {
     os << "{";
     for (auto i : vs) {

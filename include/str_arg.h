@@ -1,49 +1,49 @@
-#ifndef CL_INCLUDE_VAL_ARG_H
-#define CL_INCLUDE_VAL_ARG_H
+#ifndef CL_INCLUDE_STR_ARG_H
+#define CL_INCLUDE_STR_ARG_H
 
 #include "include/arg.h"
 
 namespace cl {
 
 template <typename T>
-struct ValReader {
+struct StrReader {
   bool operator()(std::istream& is, T& t) const {
     is >> t;
     return !is.fail();
   }
 };  
 template <typename T>
-struct ValWriter {
+struct StrWriter {
   void operator()(std::ostream& os, const T& t) const {
     os << t;
   }
 };
 
-template <typename T, typename R = ValReader<T>, typename W = ValWriter<T>, size_t Arity = 1>
-class ValArg : public Arg {
+template <typename T, typename R = StrReader<T>, typename W = StrWriter<T>, size_t Arity = 1>
+class StrArg : public Arg {
   public:
-    static ValArg& create(const std::string& name) {
-      return *(new ValArg(name));
+    static StrArg& create(const std::string& name) {
+      return *(new StrArg(name));
     }
-    virtual ~ValArg() = default;
+    virtual ~StrArg() = default;
 
-    ValArg& alias(const std::string& a) {
+    StrArg& alias(const std::string& a) {
       names_.insert(a);
       return *this;
     }
-    ValArg& description(const std::string& d) {
+    StrArg& description(const std::string& d) {
       desc_ = d;
       return *this;
     }
-    ValArg& usage(const std::string& u) {
+    StrArg& usage(const std::string& u) {
       usage_ = u;
       return *this;
     }
-    ValArg& required() {
+    StrArg& required() {
       req_ = true;
       return *this;
     }
-    ValArg& initial(const T& val) {
+    StrArg& initial(const T& val) {
       val_ = val;
       return *this;
     }
@@ -67,7 +67,7 @@ class ValArg : public Arg {
     }
 
   private:
-    ValArg(const std::string& name) : Arg(name), val_() {}
+    StrArg(const std::string& name) : Arg(name), val_() {}
     T val_;
 };
 

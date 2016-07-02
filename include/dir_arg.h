@@ -57,8 +57,8 @@ class DirReader {
     }
 };
 
-template <typename T, typename R = ValReader<typename T::value_type>, typename W = ValWriter<T>>
-using DirArg = ValArg<T, DirReader<T, R>, W>;
+template <typename T, typename R = StrReader<typename T::value_type>, typename W = StrWriter<T>>
+using DirArg = StrArg<T, DirReader<T, R>, W>;
 
 } // namespace cl
 

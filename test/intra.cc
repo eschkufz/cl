@@ -29,7 +29,7 @@ char** argv(const initializer_list<string>& args) {
 // Writer for int vector
 namespace cl {
 template <>
-struct ValWriter<vector<int>> {
+struct StrWriter<vector<int>> {
   void operator()(ostream& os, const vector<int>& vs) {
     os << vs.size();
   }
@@ -55,14 +55,14 @@ TEST(arg_table, size) {
 
 // Check unsuccessful arg parsing
 TEST(arg, read_fail) {
-  auto& int1 = ValArg<int>::create("--int1");
+  auto& int1 = StrArg<int>::create("--int1");
   Args::read(2, argv({"--int1", "a"}));
   EXPECT_TRUE(int1.error());
 }
 
 // Check successful arg parsing
 TEST(arg, read_succ) {
-  auto& int2 = ValArg<int>::create("--int2").initial(0);
+  auto& int2 = StrArg<int>::create("--int2").initial(0);
   Args::read(2, argv({"--int2", "20"}));
   EXPECT_FALSE(int2.error());
   EXPECT_EQ(int2.value(), 20);
@@ -70,7 +70,7 @@ TEST(arg, read_succ) {
 
 // Check provided flag
 TEST(arg, provided) {
-  auto& int3 = ValArg<int>::create("--int3");
+  auto& int3 = StrArg<int>::create("--int3");
   EXPECT_FALSE(int3.provided());
   Args::read(2, argv({"--int3", "20"}));
   EXPECT_TRUE(int3.provided());
@@ -78,7 +78,7 @@ TEST(arg, provided) {
 
 // Check duplicate flag
 TEST(arg, duplicate) {
-  auto& int4 = ValArg<int>::create("--int4");
+  auto& int4 = StrArg<int>::create("--int4");
   EXPECT_FALSE(int4.duplicated());
   Args::read(4, argv({"--int4", "10", "--int4", "20"}));
   EXPECT_TRUE(int4.duplicated());

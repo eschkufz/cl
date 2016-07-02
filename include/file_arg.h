@@ -2,7 +2,7 @@
 #define CL_INCLUDE_FILE_ARG_H
 
 #include <fstream>
-#include "include/val_arg.h"
+#include "include/str_arg.h"
 
 namespace cl {
 
@@ -16,8 +16,8 @@ struct FileReader {
   }
 };
 
-template <typename T, typename R = ValReader<T>, typename W = ValWriter<T>>
-using FileArg = ValArg<T, FileReader<T, R>, W>; 
+template <typename T, typename R = StrReader<T>, typename W = StrWriter<T>>
+using FileArg = StrArg<T, FileReader<T, R>, W>; 
 
 } // namespace cl
 

@@ -8,6 +8,6 @@
 #include "include/file_arg.h"
 #include "include/group.h"
 #include "include/simple.h"
-#include "include/val_arg.h"
+#include "include/str_arg.h"
 
 #endif

@@ -1,7 +1,7 @@
 #ifndef CL_INCLUDE_FLAG_ARG_H
 #define CL_INCLUDE_FLAG_ARG_H
 
-#include "include/val_arg.h"
+#include "include/str_arg.h"
 
 namespace cl {
 
@@ -12,7 +12,7 @@ struct FlagReader {
   }
 };
 
-typedef ValArg<bool, FlagReader, ValWriter<bool>, 0> FlagArg;
+typedef StrArg<bool, FlagReader, StrWriter<bool>, 0> FlagArg;
 
 } // namespace cl
 
