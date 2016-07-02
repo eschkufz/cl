@@ -27,12 +27,14 @@ char** argv(const initializer_list<string>& args) {
 }
 
 // Writer for int vector
+namespace cl {
 template <>
 struct ValWriter<vector<int>> {
   void operator()(ostream& os, const vector<int>& vs) {
     os << vs.size();
   }
 };
+}
 
 // Global state: guaranteed to be initialized before any tests are invoked
 auto& global = FlagArg::create("--global");

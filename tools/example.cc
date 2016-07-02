@@ -17,6 +17,7 @@ struct C {
   int z;
 };
 
+namespace cl {
 template <>
 struct ValReader<C> {
   bool operator()(istream& is, C& c) const {
@@ -24,19 +25,20 @@ struct ValReader<C> {
     return !is.fail();
   }
 };
-
 template <>
 struct ValWriter<C> {
   void operator()(ostream& os, const C& c) const {
     os << c.x << " " << c.y << " " << c.z;
   }
 };
+}
 
 auto& g2 = Group::create("Complex Arguments");
 auto& c = ValArg<C>::create("--complex")
   .usage("<int> <int> <int>")
   .description("A triplet of ints");
 
+namespace cl {
 template <>
 struct ValWriter<vector<int>> {
   void operator()(ostream& os, const vector<int>& vs) const {
@@ -47,6 +49,7 @@ struct ValWriter<vector<int>> {
     os << " }";
   }
 };
+}
 
 auto& g3 = Group::create("Higher-Order Arguments");
 auto& i2 = FileArg<int>::create("--int-file")

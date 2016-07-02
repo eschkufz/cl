@@ -1,6 +1,7 @@
 #ifndef CL_INCLUDE_GROUP_H
 #define CL_INCLUDE_GROUP_H
 
+#include <algorithm>
 #include "ext/patterns/include/singleton.h"
 #include "include/arg.h"
 #include "include/arg_table.h"
