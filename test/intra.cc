@@ -26,12 +26,19 @@ char** argv(const initializer_list<string>& args) {
   return &ret[0];
 }
 
-// Writer for int vector
-namespace cl {
+// I/O for int vectors
+namespace cl{
+template <>
+struct StrReader<vector<int>> {
+  bool operator()(istream& is, vector<int>& v) {
+    copy(istream_iterator<int>(is), istream_iterator<int>(), back_inserter(v));
+    return true;
+  }
+};
 template <>
 struct StrWriter<vector<int>> {
-  void operator()(ostream& os, const vector<int>& vs) {
-    os << vs.size();
+  void operator()(ostream& os, const vector<int>& v) {
+    os << v.size();
   }
 };
 }

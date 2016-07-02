@@ -1,3 +1,4 @@
+#include <iterator>
 #include "include/cl.h"
 
 using namespace cl;
@@ -40,13 +41,18 @@ auto& c = StrArg<C>::create("--complex")
 
 namespace cl {
 template <>
+struct StrReader<vector<int>> {
+  bool operator()(istream& is, vector<int>& v) const {
+    copy(istream_iterator<int>(is), istream_iterator<int>(), back_inserter(v));
+    return true;
+  }
+};
+template <>
 struct StrWriter<vector<int>> {
-  void operator()(ostream& os, const vector<int>& vs) const {
-    os << "{";
-    for (auto i : vs) {
-      os << " " << i;
-    }
-    os << " }";
+  void operator()(ostream& os, const vector<int>& v) const {
+    os << "{ ";
+    copy(v.begin(), v.end(), ostream_iterator<int>(os, " "));
+    os << "}";
   }
 };
 }

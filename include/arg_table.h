@@ -9,8 +9,8 @@ class Arg;
 class Group;
 
 struct ArgTable {
-  std::vector<Group*> groups_;
   std::vector<Arg*> args_;
+  std::vector<Group*> groups_;
   std::vector<std::vector<Arg*>> args_by_group_;
   std::vector<const char*> unrec_;
 };

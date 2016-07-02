@@ -5,14 +5,21 @@
 
 namespace cl {
 
-struct FlagReader {
+template <>
+struct StrReader<bool> {
   bool operator()(std::istream& is, bool& b) const {
     (void)is;
     return (b = true);
   }
 };
+template <>
+struct StrWriter<bool> {
+  void operator()(std::ostream& os, const bool& b) const {
+    os << (b ? "true" : "false");
+  }
+};
 
-typedef StrArg<bool, FlagReader, StrWriter<bool>, 0> FlagArg;
+typedef StrArg<bool, StrReader<bool>, StrWriter<bool>, 0> FlagArg;
 
 } // namespace cl
 
