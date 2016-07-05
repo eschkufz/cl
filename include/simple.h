@@ -14,7 +14,7 @@ class Simple {
         .alias("-h")
         .description("Print command line information and quit");
 
-      Args::read(argc, argv);
+      read_args(argc, argv);
       if (help) {
         write_help(out);
         exit(0);
@@ -28,10 +28,47 @@ class Simple {
     }
 
   private:
+    static void read_args(int argc, char** argv) {
+      std::vector<std::string> args;
+      std::stringstream ss;
+      for (int i = 0; i < argc; ++i) {
+        ss << "\"" << argv[i] << "\"" << std::endl;
+      }
+      get_args(ss, args);
+      std::vector<char*> cps;
+      for (const auto& a : args) {
+        cps.push_back((char*)a.c_str());
+      }
+
+      for (const auto& a : args) {
+        std::cout << "[" << a << "]" << std::endl;
+      }
+
+      Args::read(cps.size(), cps.data());
+    }
+    static void get_args(std::stringstream& ss, std::vector<std::string>& args) {
+      while (!ss.eof()) {
+        get_arg(ss, args);
+      }
+    }
+    static void get_arg(std::stringstream& ss, std::vector<std::string>& args) {
+      for (; isspace(ss.peek()); ss.get());
+      if (ss.peek() == '#') {
+        while (ss.get() != '\n');
+      }
+      std::string s = "";
+      if (ss.peek() == '"') {
+        for (ss.get(); ss.peek() != '"'; s += ss.get());
+        ss.get();
+      } else {
+        ss >> s;
+      }
+      args.push_back(s);
+    }
+
     static bool error(const Arg* a) {
       return a->error() || a->duplicated() || (a->required() && !a->provided());
     }
-
     static void write_error(std::ostream& os, Arg* a) {
       os << "Error (" << *(a->alias_begin()) << "): "; 
       if (a->error()) {
