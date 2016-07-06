@@ -25,7 +25,9 @@ class Simple {
       }
       for (auto i = Args::arg_begin(), ie = Args::arg_end(); i != ie; ++i) {
         if (error(*i)) {
+          err << "Error (" << *((*i)->alias_begin()) << "): "; 
           write_error(err, *i);
+          err << std::endl;
           exit(1);
         }
       }
@@ -83,13 +85,12 @@ class Simple {
       return a->error() || a->duplicated() || (a->required() && !a->provided());
     }
     static void write_error(std::ostream& os, Arg* a) {
-      os << "Error (" << *(a->alias_begin()) << "): "; 
       if (a->error()) {
-        os << "Unable to parse argument!" << std::endl;
+        os << "Unable to parse argument!";
       } else if (a->duplicated()) {
-        os << "Argument appears more than once!" << std::endl;
+        os << "Argument appears more than once!";
       } else {
-        os << "Required value not provided!" << std::endl;
+        os << "Required value not provided!";
       } 
     }
 
@@ -114,11 +115,12 @@ class Simple {
           if (error(*j)) {
             os << "    Error:    ";
             write_error(os, *j);
+            os << std::endl;
           } else {
             os << "    Value:    ";
             (*j)->write(os);
+            os << std::endl;
           }
-          os << std::endl;
         }
       }
       os << std::endl;
