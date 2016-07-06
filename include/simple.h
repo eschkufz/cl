@@ -13,8 +13,12 @@ class Simple {
       auto& help = FlagArg::create("--help")
         .alias("-h")
         .description("Print command line information and quit");
+      StrArg<std::string>::create("--config")
+        .usage("<path>")
+        .initial("...")
+        .description("Import command line arguments from a config file");
 
-      read_args(argc, argv);
+      read_args(argc, argv, err);
       if (help) {
         write_help(out);
         exit(0);
@@ -28,42 +32,51 @@ class Simple {
     }
 
   private:
-    static void read_args(int argc, char** argv) {
+    static void read_args(int argc, char** argv, std::ostream& err) {
       std::vector<std::string> args;
       std::stringstream ss;
       for (int i = 0; i < argc; ++i) {
         ss << "\"" << argv[i] << "\"" << std::endl;
       }
-      get_args(ss, args);
+      get_args(ss, args, err);
       std::vector<char*> cps;
       for (const auto& a : args) {
         cps.push_back((char*)a.c_str());
       }
-
-      for (const auto& a : args) {
-        std::cout << "[" << a << "]" << std::endl;
-      }
-
       Args::read(cps.size(), cps.data());
     }
-    static void get_args(std::stringstream& ss, std::vector<std::string>& args) {
-      while (!ss.eof()) {
-        get_arg(ss, args);
+    static void get_args(std::istream& is, std::vector<std::string>& args, std::ostream& err) {
+      while (!is.eof()) {
+        const auto arg = get_arg(is);
+        if (arg == "--config") {
+          const auto path = get_arg(is);
+          std::ifstream ifs(path);
+          if (!ifs.is_open()) {
+            err << "Error: Unable to open config file \"" << path << "\"!" << std::endl;
+            exit(1);
+          }
+          get_args(ifs, args, err);
+        } else {
+          args.push_back(arg);
+        }
       }
+      args.pop_back();
     }
-    static void get_arg(std::stringstream& ss, std::vector<std::string>& args) {
-      for (; isspace(ss.peek()); ss.get());
-      if (ss.peek() == '#') {
-        while (ss.get() != '\n');
+    static std::string get_arg(std::istream& is) {
+      while (isspace(is.peek()) || is.peek() == '#') {
+        for (; isspace(is.peek()); is.get());
+        if (is.peek() == '#') {
+          while (is.get() != '\n');
+        }
       }
       std::string s = "";
-      if (ss.peek() == '"') {
-        for (ss.get(); ss.peek() != '"'; s += ss.get());
-        ss.get();
+      if (is.peek() == '"') {
+        for (is.get(); is.peek() != '"'; s += is.get());
+        is.get();
       } else {
-        ss >> s;
+        is >> s;
       }
-      args.push_back(s);
+      return s;
     }
 
     static bool error(const Arg* a) {
