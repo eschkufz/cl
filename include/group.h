@@ -3,7 +3,6 @@
 
 #include <algorithm>
 #include "ext/patterns/include/singleton.h"
-#include "include/arg.h"
 #include "include/arg_table.h"
 
 namespace cl {
@@ -28,9 +27,6 @@ class Group {
     }
     arg_itr arg_end() const {
       return patterns::Singleton<ArgTable>::get().args_by_group_[idx_].end();
-    }
-    arg_itr arg_find(const std::string& alias) const {
-      return std::find_if(arg_begin(), arg_end(), [alias](Arg* a){return a->matches(alias);});
     }
 
   private:
