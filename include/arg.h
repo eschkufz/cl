@@ -15,7 +15,7 @@ class Arg {
     Arg(const std::string& name) : names_({{name}}), desc_(""), usage_(""), req_(false), prov_(false), dup_(false), err_(false) {
       auto& table = patterns::Singleton<ArgTable>::get();
       if (table.groups_.empty()) {
-        Group::create("<Ungrouped>");
+        Group::create("Ungrouped Arguments");
       }
       table.args_by_group_.back().push_back(this);
       table.args_.push_back(this);
