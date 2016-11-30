@@ -16,8 +16,8 @@ class Group {
 
     Group(const Group& rhs) = delete;
     Group(const Group&& rhs) = delete;
-    Group& operator=(const Group& rhs) = delete;
-    Group&& operator=(const Group&& rhs) = delete;
+    Group& operator=(Group& rhs) = delete;
+    Group& operator=(Group&& rhs) = delete;
 
     const std::string& name() const {
       return name_;
