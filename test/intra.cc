@@ -48,15 +48,15 @@ auto& global = FlagArg::create("--global");
 
 // Check that groups and args are organized correctly in arg table
 TEST(arg_table, size) {
-  EXPECT_EQ(num_groups(), 0);
+  EXPECT_EQ(num_groups(), 1);
   EXPECT_EQ(num_args(), 1);
 
   auto& g1 = Group::create("-g");
-  EXPECT_EQ(num_groups(), 1);
+  EXPECT_EQ(num_groups(), 2);
   EXPECT_EQ(num_args(&g1), 0);
 
   FlagArg::create("-f");
-  EXPECT_EQ(num_groups(), 1);
+  EXPECT_EQ(num_groups(), 2);
   EXPECT_EQ(num_args(&g1), 1);
 }
 
