@@ -190,7 +190,6 @@ Use the Arg API to build your own command line tools or try the example provided
 ``` c++
 #include "cl.h"
 
-auto& x = StrArg<int>::create("--int");
 int main(int argc, char** argv) {
   cl::Simple::read(argc, argv);
   // ...
@@ -199,16 +198,6 @@ int main(int argc, char** argv) {
 The example code provides support for help messages, error handling, and config file parsing.
 ```
 $ ./a.out --help
-
-Help and Command Line Options:
- --config <path>
-    Desc:     Import command line arguments from a config file
-    Required: no
-    Value:    ...
- --help -h 
-    Desc:     Print command line information and quit
-    Required: no
-    Value:    true
 ```
 ```
 $ ./a.out --int foo
