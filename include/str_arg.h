@@ -25,7 +25,6 @@ class StrArg : public Arg {
     static StrArg& create(const std::string& name) {
       return *(new StrArg(name));
     }
-    virtual ~StrArg() = default;
 
     StrArg& alias(const std::string& a) {
       names_.insert(a);
@@ -54,15 +53,15 @@ class StrArg : public Arg {
       return val_;
     }
 
-    virtual void read(std::istream& is) {
+    void read(std::istream& is) override {
       err_ = !R()(is, val_);
       dup_ = prov_;
       prov_ = true;
     }
-    virtual void write(std::ostream& os) const {
+    void write(std::ostream& os) const override {
       W()(os, val_);
     }
-    virtual size_t arity() const {
+    size_t arity() const override {
       return Arity;
     }
 
