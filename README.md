@@ -151,12 +151,14 @@ int main(int argc, char** argv) {
   for (auto i = cl::Args::arg_begin(), ie = cl::Args::arg_end(); i != ie; ++i) {
     // ...
   }
+  auto i = cl::Args::arg_find("--x");
   // Argument sorted by groups
   for (auto i = cl::Args::group_begin(), ie = cl::Args::group_end(); i != ie; ++i) {
     for (auto j = i->arg_begin(), je = i->arg_end(); j != je; ++j) {
       // ...
     }
   }
+  auto j = cl::Args::group_find("Group 1");
   // Command line values which weren't associated with arguments
   for (auto i = cl::Args::unrecognized_begin(), ie = cl::Args::unrecognized_end(); i != ie; ++i) {
     // ...
@@ -177,6 +179,7 @@ int main(int argc, char** argv) {
   auto a  = cl::Args::arg_begin();
   a->alias_begin();  // Iterators over argument names
   a->alias_end();   
+  a->matches("..."); // Is this one of this argument's names?
   a->description();  // Argument description
   a->usage();        // Argument usage
   a->required();     // Is this argument required?
