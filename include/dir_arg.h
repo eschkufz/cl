@@ -4,6 +4,7 @@
 #include <dirent.h>
 #include <fstream>
 #include <sys/stat.h>
+#include "ext/stl/include/comment_stream.h"
 #include "include/str_arg.h"
 
 namespace cl {
@@ -44,7 +45,8 @@ class DirReader {
           if (!ifs.is_open()) {
             return false;
           }
-          ss << ifs.rdbuf();
+          stl::comment_stream cs(ifs);
+          ss << cs.rdbuf();
         }
       }
       return true;

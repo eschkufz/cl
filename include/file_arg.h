@@ -2,6 +2,7 @@
 #define CL_INCLUDE_FILE_ARG_H
 
 #include <fstream>
+#include "ext/stl/include/comment_stream.h"
 #include "include/str_arg.h"
 
 namespace cl {
@@ -12,7 +13,8 @@ struct FileReader {
     std::string path = "";
     is >> path;
     std::ifstream ifs(path);
-    return ifs.is_open() ? R()(ifs, t) : false;
+    stl::comment_stream cs(ifs);
+    return ifs.is_open() ? R()(cs, t) : false;
   }
 };
 

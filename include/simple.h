@@ -1,6 +1,7 @@
 #ifndef CL_INCLUDE_SIMPLE_H
 #define CL_INCLUDE_SIMPLE_H
 
+#include <iomanip>
 #include "include/args.h"
 #include "include/flag_arg.h"
 
@@ -38,7 +39,7 @@ class Simple {
       std::vector<std::string> args;
       std::stringstream ss;
       for (int i = 0; i < argc; ++i) {
-        ss << "\"" << argv[i] << "\"" << std::endl;
+        ss << std::quoted(argv[i]) << std::endl;
       }
       get_args(ss, args, err);
       std::vector<char*> cps;
@@ -72,12 +73,7 @@ class Simple {
         }
       }
       std::string s = "";
-      if (is.peek() == '"') {
-        for (is.get(); is.peek() != '"'; s += is.get());
-        is.get();
-      } else {
-        is >> s;
-      }
+      is >> std::quoted(s);
       return s;
     }
 
