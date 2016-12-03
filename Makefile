@@ -1,6 +1,6 @@
 ### Constants: g++
 INC=-I.
-CXX=g++ -std=c++11
+CXX=g++ -std=c++14
 CXX_OPT=-Werror -Wextra -Wall -Wfatal-errors -pedantic 
 
 ### Constants: gtest
